@@ -22,3 +22,7 @@ class LinkShitTest(unittest.TestCase):
         assert a.next() == ' shit-'
         assert a.next() == ('user','@govnoeb','govnoeb')
         pass
+
+
+if __name__=="__main__":
+    unittest.main()

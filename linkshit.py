@@ -20,11 +20,11 @@ def msg_handler(match):
 def user_handler(match):
     return ('user',match.group(1))
 
-shittypes = {
-    'url':  (_URL_RE,  lambda m: (m.group(1),)),
-    'msg':  (_MSG_RE,  lambda m: (m.group(1),)),
-    'user': (_USER_RE, lambda m: (m.group(1),)),
-}
+shittypes = (
+    ('url',  _URL_RE,  lambda m: (m.group(1),)),
+    ('msg',  _MSG_RE,  lambda m: (m.group(1),)),
+    ('user', _USER_RE, lambda m: (m.group(1),)),
+)
 
 class LinkParser(object):
     def __init__(self,types=shittypes):
@@ -36,14 +36,14 @@ class LinkParser(object):
         while pos<texlen:
             mins = texlen
             minm = None
-            for typ,rehndl in self.types.iteritems():
-                m = rehndl[0].search(text[pos:])
+            for typ,reg,handler in self.types:
+                m = reg.search(text[pos:])
                 if m is None:
                     continue
                 s = m.start()
                 if s<mins:
                     mins = s
-                    minm = (m,typ, rehndl[1])
+                    minm = (m,typ, handler)
             if minm is None:
                 yield text[pos:]
                 return
