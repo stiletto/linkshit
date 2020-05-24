@@ -1,27 +1,16 @@
 *.py[co]
+.mypy_cache
+__pycache__
 
 # Packages
 *.egg
 *.egg-info
-dist
 build
-eggs
-parts
-bin
-var
-sdist
-develop-eggs
-.installed.cfg
-
-# Installer logs
-pip-log.txt
+dist
 
 # Unit test / coverage reports
 .coverage
 .tox
+htmlcov
 
-#Translations
-*.mo
-
-#Mr Developer
-.mr.developer.cfg
+poetry.lock # linkshit is a library, so we don't commit poetry.lock

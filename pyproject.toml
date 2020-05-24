@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "linkshit"
+version = "1.0"
+description = "Small and stupid library for finding links in text and parsing simple markups"
+authors = ["Stiletto <blasux@blasux.ru>", "Kagami Hiiragi <kagami@genshiken.org>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = ">=2.6"
+
+[tool.poetry.dev-dependencies]
+coverage = "^4.4.2"
+mypy = {version = "^0.770", python = ">=3.5"}
+flake8 = {version = "^3.8.2", python = ">=3.6"}
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
+

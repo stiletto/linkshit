@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 #
 # Copyright 2014 Stiletto <blasux@blasux.ru>
 # Copyright 2012 Kagami Hiiragi <kagami@genshiken.org>
@@ -7,11 +8,15 @@
 # coding: utf-8
 
 import re
+import sys
+
+if sys.version_info > (3, 6):
+    import typing
 
 
-_URL_RE = re.compile(ur"""\b((?:([\w-]+):(/{1,3})|www[.])(?:(?:(?:[^\s&()]|&amp;|&quot;)*(?:[^!"#$%&'()*+,.:;<=>?@\[\]^`{|}~\s]))|(?:\((?:[^\s&()]|&amp;|&quot;)*\)))+)""")
-_USER_RE = re.compile(ur"""(?:(?<=[\s\W])|^)@([0-9A-Za-z-]+)""")
-_MSG_RE = re.compile(ur"""(?:(?<=[\s\W])|^)#([0-9A-Za-z]+(?:/[0-9A-Za-z]+)?)""")
+_URL_RE = re.compile(r"""\b((?:([\w-]+):(/{1,3})|www[.])(?:(?:(?:[^\s&()]|&amp;|&quot;)*(?:[^!"#$%&'()*+,.:;<=>?@\[\]^`{|}~\s]))|(?:\((?:[^\s&()]|&amp;|&quot;)*\)))+)""")  # noqa: E501
+_USER_RE = re.compile(r"""(?:(?<=[\s\W])|^)@([0-9A-Za-z-]+)""")
+_MSG_RE = re.compile(r"""(?:(?<=[\s\W])|^)#([0-9A-Za-z]+(?:/[0-9A-Za-z]+)?)""")
 
 shittypes = (
     ('url', _URL_RE, lambda m: (m.group(1), clip_long_url(m))),
@@ -21,6 +26,7 @@ shittypes = (
 
 
 def clip_long_url(m):
+    # type: (re.Match) -> str
     """Clip long urls."""
     # It may be done much better.
     url = m.group(1)
@@ -31,10 +37,12 @@ def clip_long_url(m):
 
 class LinkParser(object):
     def __init__(self, types=shittypes):
+        # noqa: E501 type: (LinkParser, typing.Iterable[typing.Tuple[str, re.Pattern, typing.Callable[[re.Match], typing.Tuple]]]) -> None
         self.types = types
 
     def parse(self, text):
-        # Who the fuck write this piece of shit?
+        # type: (LinkParser, str) -> typing.Iterator[typing.Union[str, typing.Tuple]]
+        # Who the fuck wrote this piece of shit?
         # TODO: Refactor this shit.
         pos = 0
         texlen = len(text)
@@ -57,6 +65,7 @@ class LinkParser(object):
                 yield text[pos:pos + mins]
                 yield ((minm[0], minm[1].group(0)) + minm[2](minm[1]))
                 pos = pos + minm[1].end()
+
 
 _shitparser = LinkParser()
 
